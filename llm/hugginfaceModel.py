@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
+from graph.tools.tools import get_tools
 
 load_dotenv()
 
@@ -12,10 +13,11 @@ def get_llm():
     
     # Try these models in order - they're known to work with HF Inference API
     models_to_try = [
+        "meta-llama/Meta-Llama-3-8B-Instruct",
         "meta-llama/Llama-3.2-3B-Instruct",
+        "microsoft/Phi-3-mini-4k-instruct",
         "mistralai/Mistral-7B-Instruct-v0.2",
         "HuggingFaceH4/zephyr-7b-beta",
-        "microsoft/Phi-3-mini-4k-instruct",
     ]
     
     for model_id in models_to_try:
@@ -30,14 +32,14 @@ def get_llm():
             )
             
             chat_model = ChatHuggingFace(llm=llm)
-            print(f"✓ Successfully initialized {model_id}")
+            # print(f"✓ Successfully initialized {model_id}")
 
-                        
-            tools = []
-
+            # print("Got the tools ", get_tools())                        
+            tools = get_tools()
+            # tools = []
             
-            chat_model = chat_model.bind_tools(tools)
-            return chat_model
+            chat_model_with_tools = chat_model.bind_tools(tools)
+            return chat_model_with_tools
             
         except Exception as e:
             print(f"✗ Failed with {model_id}: {e}")

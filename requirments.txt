@@ -8,3 +8,4 @@ huggingface-hub
 langchain-core
 langchain-huggingface
 aiohttp
+duckduckgo-search

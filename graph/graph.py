@@ -4,15 +4,16 @@ from langchain_core.messages import BaseMessage, HumanMessage
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import ToolNode, tools_condition
 from langchain_core.tools import tool
-from graph.state import ChatState
 from graph.nodes.chat_node import chat_node
-
+from graph.state import ChatState
+from graph.tools.tools import get_tools
 
 def get_graph():
 
-    tools = []
-    tool_node = ToolNode(tools)
+    tools = get_tools()
 
+    tool_node = ToolNode(tools)
+    
     memory = MemorySaver()
 
     graph = StateGraph(ChatState)
