@@ -1,0 +1,10 @@
+langgraph
+langchain-core
+mcp
+rich
+python-dotenv
+pydantic
+huggingface-hub
+langchain-core
+langchain-huggingface
+aiohttp

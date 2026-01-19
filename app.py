@@ -1,0 +1,42 @@
+from langgraph.graph import StateGraph, START, END
+from typing import TypedDict, Annotated
+from langchain_core.messages import BaseMessage, HumanMessage
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.prebuilt import ToolNode, tools_condition
+from langchain_core.tools import tool
+from dotenv import load_dotenv
+import requests
+from llm.hugginfaceModel import get_llm
+from graph.graph import get_graph
+
+load_dotenv()
+
+
+chatbot = get_graph()
+
+
+if __name__ == "__main__":
+    print("Type 'exit' to quit.\n")
+
+    # thread_id still works with MemorySaver (conversation kept in RAM)
+    thread_id = "demo-thread"
+
+    while True:
+        user_input = input("You: ")
+        if user_input.lower().strip() in {"exit", "quit"}:
+            print("Goodbye!")
+            break
+
+        # Build initial state for this turn
+        state = {"messages": [HumanMessage(content=user_input)]}
+
+        # Run the graph
+        result = chatbot.invoke(
+            state,
+            config={"configurable": {"thread_id": thread_id}},
+        )
+
+        # Get the latest message from the assistant
+        messages = result["messages"]
+        last_msg = messages[-1]
+        print(f"Bot: {last_msg.content}\n")
