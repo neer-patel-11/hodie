@@ -27,7 +27,8 @@ def duckduckgo_search(query: str, max_results: int = 5) -> str:
         if not results:
             return "No results found."
         
-        return "\n" + ("-" * 80 + "\n").join(results)
+        # print("Duck duck go result " , results)
+        return results
     
     except Exception as e:
         return f"Error performing search: {str(e)}"
