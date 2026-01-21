@@ -9,3 +9,7 @@ langchain-core
 langchain-huggingface
 aiohttp
 duckduckgo-search
+langchain_ollama
+langchain_google_genai
+ddgs
+langchain_openai

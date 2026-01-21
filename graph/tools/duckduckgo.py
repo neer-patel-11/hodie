@@ -1,34 +1,33 @@
-from langchain_core.tools import Tool
-import subprocess
-import json
+from langchain_core.tools import tool
+from ddgs import DDGS
 
-def get_duckduckgo_tool():
-    """Create a DuckDuckGo search tool using MCP server"""
+@tool
+def duckduckgo_search(query: str, max_results: int = 5) -> str:
+    """
+    Search the web using DuckDuckGo.
     
-    def search_duckduckgo(query: str) -> str:
-        """Search using DuckDuckGo via MCP server"""
-        try:
-            # Use raw string for Windows path
-            result = subprocess.run(
-                ["python", r"D:\AI_agents\hodie\mcp_servers\duckduckgo_mcp_server.py"],
-                input=json.dumps({"query": query, "max_results": 5}),
-                capture_output=True,
-                text=True,
-                timeout=30
-            )
-            
-            if result.returncode == 0:
-                return result.stdout
-            else:
-                return f"Error: {result.stderr}"
-                
-        except Exception as e:
-            return f"Search failed: {str(e)}"
+    Args:
+        query: The search query string
+        max_results: Maximum number of results to return (default: 5)
     
-    duckduckgo_tool = Tool(
-        name="duckduckgo_search",
-        description="Search the web using DuckDuckGo. Input should be a search query string.",
-        func=search_duckduckgo
-    )
+    Returns:
+        Formatted string containing search results with titles, URLs, and descriptions
+    """
+    print("using duckduckGo Tool")
+    try:
+        results = []
+        with DDGS() as ddgs:
+            for r in ddgs.text(query, max_results=max_results):
+                results.append(
+                    f"Title: {r['title']}\n"
+                    f"URL: {r['href']}\n"
+                    f"Description: {r['body']}\n"
+                )
+        
+        if not results:
+            return "No results found."
+        
+        return "\n" + ("-" * 80 + "\n").join(results)
     
-    return duckduckgo_tool
+    except Exception as e:
+        return f"Error performing search: {str(e)}"
