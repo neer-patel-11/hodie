@@ -3,6 +3,10 @@
 # from llm.geminiModel import get_llm
 from llm.gptModel import get_gptModel
 
-def get_llm():
-    model = get_gptModel()
-    return model
+_model = None
+
+async def get_llm():
+    global _model
+    if _model is None:
+        _model = await get_gptModel()
+    return _model

@@ -1,22 +1,25 @@
-from langchain_core.messages import BaseMessage, HumanMessage
-
-from dotenv import load_dotenv
-
-from graph.graph import get_graph
 import sys
 from pathlib import Path
 
-# Add project root to path
+# Add project root to path FIRST
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
+from mcp_client import get_mcp_tools
+ 
+from langchain_core.messages import BaseMessage, HumanMessage
+from dotenv import load_dotenv
+from graph.graph import get_graph
+import asyncio
 load_dotenv()
 
 
-chatbot = get_graph()
+async def main():
 
 
-if __name__ == "__main__":
+    chatbot =await get_graph()
+
+
     print("Type 'exit' to quit.\n")
 
     # thread_id still works with MemorySaver (conversation kept in RAM)
@@ -32,7 +35,7 @@ if __name__ == "__main__":
         state = {"messages": [HumanMessage(content=user_input)]}
 
         # Run the graph
-        result = chatbot.invoke(
+        result =await chatbot.ainvoke(
             state,
             config={"configurable": {"thread_id": thread_id}},
         )
@@ -41,3 +44,6 @@ if __name__ == "__main__":
         messages = result["messages"]
         last_msg = messages[-1]
         print(f"Bot: {last_msg.content}\n")
+
+if __name__ == "__main__":
+    asyncio.run(main())

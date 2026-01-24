@@ -6,9 +6,9 @@ from graph.nodes.chat_node import chat_node
 from graph.state import ChatState
 from graph.tools.tools import get_tools
 
-def get_graph():
+async def get_graph():
 
-    tools = get_tools()
+    tools =await get_tools()
 
     tool_node = ToolNode(tools)
     

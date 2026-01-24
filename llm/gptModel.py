@@ -5,7 +5,7 @@ from graph.tools.tools import get_tools
 
 load_dotenv()
 
-def get_gptModel():
+async def get_gptModel():
     api_key = os.getenv("OPENAI_API_KEY")
     
     if not api_key:
@@ -32,7 +32,7 @@ def get_gptModel():
             
             print(f"✓ Successfully initialized {model_id}")
             
-            tools = get_tools()
+            tools =await get_tools()
             
             chat_model_with_tools = chat_model.bind_tools(tools)
             return chat_model_with_tools

@@ -7,16 +7,15 @@ load_dotenv()
 
 
 
-llm = get_llm()
 
-def chat_node(state: ChatState):
+async def chat_node(state: ChatState):
     """LLM node that may answer or request a tool call."""
     
+    llm =await get_llm()
 
     messages = state["messages"]
-    response = llm.invoke(messages)
 
-    
-    
+    response =await llm.ainvoke(messages)
+
     return {"messages": [response]}
 
