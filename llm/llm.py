@@ -9,4 +9,5 @@ async def get_llm():
     global _model
     if _model is None:
         _model = await get_gptModel()
+    
     return _model

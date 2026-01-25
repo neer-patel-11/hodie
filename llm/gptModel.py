@@ -33,7 +33,7 @@ async def get_gptModel():
             print(f"✓ Successfully initialized {model_id}")
             
             tools =await get_tools()
-            
+            # print(tools)
             chat_model_with_tools = chat_model.bind_tools(tools)
             return chat_model_with_tools
             
