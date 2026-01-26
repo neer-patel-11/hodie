@@ -1,5 +1,8 @@
 from langchain_mcp_adapters.client import MultiServerMCPClient
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 client = MultiServerMCPClient(
      {
@@ -25,7 +28,37 @@ client = MultiServerMCPClient(
                 "PLAYWRIGHT_TIMEOUT": "0"    # 5 minutes timeout
             }
         },
+
+        # Memory/context storage
+        "memory": {
+            "transport": "stdio",
+            "command": "npx",
+            "args": [
+                "@modelcontextprotocol/server-memory"
+            ],
+        },
         
+        # Sequential thinking for complex tasks
+        "sequential-thinking": {
+            "transport": "stdio",
+            "command": "npx",
+            "args": [
+                "@modelcontextprotocol/server-sequential-thinking"
+            ],
+        },
+        
+        
+        "github": {
+            "transport": "stdio",
+            "command": "python",
+            "args": ["D:\AI_agents\hodie\mcp_server\github_mcp_server.py"],
+            "env": {
+                "GITHUB_TOKEN": os.getenv("GITHUB_TOKEN")
+            }
+        }
+    
+    
+
     }
 )
 

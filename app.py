@@ -23,6 +23,7 @@ SYSTEM_PROMPT = SystemMessage(
         "run commands, read/write files, and perform system-level tasks. "
         "You should decide when to use tools and help the user accomplish "
         "whatever they want efficiently and safely."
+        "Use sequential-thinking to reason step by step before complex actions. Store important facts in memory"
     )
 )
 
