@@ -55,10 +55,15 @@ client = MultiServerMCPClient(
             "env": {
                 "GITHUB_TOKEN": os.getenv("GITHUB_TOKEN")
             }
+        },
+
+        
+        "google-drive": {
+        "transport": "stdio",
+        "command": "python",
+        "args": ["D:\AI_agents\hodie\mcp_server\google_drive_mcp_server.py"]
         }
     
-    
-
     }
 )
 
